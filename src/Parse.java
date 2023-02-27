@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.io.*;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,9 +12,9 @@ public class Parse {
         String regex = "^[Сс]трада(.*)";
         Pattern pattern = Pattern.compile(regex);
 
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
                 Matcher matcher = pattern.matcher(line);
                 while (matcher.find()) {
                     foundWords.add(matcher.group());
