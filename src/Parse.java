@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.io.*;
 import java.util.Scanner;
@@ -7,23 +8,19 @@ import java.util.regex.Pattern;
 
 public class Parse {
 
-    ArrayList<String> parse(File file) {
-        ArrayList<String> foundWords = new ArrayList<>();
-        String regex = "^[Сс]трада(.*)";
-        Pattern pattern = Pattern.compile(regex);
+    public ArrayList<String> parse(File file) {
 
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                Matcher matcher = pattern.matcher(line);
-                while (matcher.find()) {
-                    foundWords.add(matcher.group());
-                }
+        ArrayList<String> lines = new ArrayList<>();
+
+        try (Scanner scanner = new Scanner(file).useDelimiter("[^а-яА-я]+")) {
+            String line = scanner.nextLine();
+            while (scanner.hasNext()) {
+                lines.addAll(Arrays.asList(line.split("[^а-яА-я]+")));
+                line = scanner.nextLine();
             }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
-
-        return foundWords;
+        return lines;
     }
 }
